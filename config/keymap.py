@@ -1,17 +1,17 @@
 
-MOVE_UP = "w"
+MOVE_UP = 'w'
 MOVE_DOWN = 's'
 MOVE_LEFT = 'a'
 MOVE_RIGHT = 'd'
 
-INTERACTIVE_SELECT = "f"
-INTERACTIVE_CANCEL = "x"
+INTERACTIVE_SELECT = 'f'
+INTERACTIVE_CANCEL = 'x'
 
-ListNameList = ["MOVE_KEY", "INTERACTIVE", "OTHER"]
+ListNameList = ["MOVE", "INTERACTIVE", "OTHER"]
 def keyToListMapper(key: str) -> str:
     if key in [MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT]:
-        return "MOVE_KEY"
-    if key in [INTERACTIVE_SELECT]:
+        return "MOVE"
+    if key in [INTERACTIVE_SELECT, INTERACTIVE_CANCEL]:
         return "INTERACTIVE"
     else:
         return "OTHER"

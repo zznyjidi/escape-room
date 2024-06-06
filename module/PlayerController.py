@@ -6,15 +6,14 @@ import config.keymap
 class PlayerController:
     __PressedKey = {}
     __updateReady = True
-    __haveUpdate = False
 
     def __init__(self, window: ttk.Window, debug: bool = False):
         """
         #### Listen to Tkinter Key Presses and Control a Moveable Object that is attached. 
 
-        To Attach a Object, Run `attachPlayer(Object)`
-        To Detach the Object, Run `detachPlayer(Object)`
-        To Set a Custom Keymap, Run `setKeymap(keyMap, listMap)`, see `config.keymap` for reference. 
+        To Attach a Object, Run `attachPlayer(Object)`  
+        To Detach the Object, Run `detachPlayer(Object)`  
+        To Set a Custom Keymap, Run `setKeymap(keyMap, listMap)`, see `config.keymap` for reference.  
 
         Args:
             window (ttk.Window): _description_
@@ -66,7 +65,8 @@ class PlayerController:
             bool: Key is Pressed. 
         """
         for i in self.__PressedKey.values():
-            if key in i:
+            PressedKeys = list(map(lambda x: x[0], i))
+            if key in PressedKeys:
                 return True
         return False
 
@@ -90,6 +90,38 @@ class PlayerController:
         self.debugPrint(f"Player Object Detached. ")
 
 
+    def inputEnable(self, clearQuery: bool = True):
+        """
+        #### Enable Input for PlayerController
+
+        Args:
+            clearQuery (bool, optional): Clear Unhandled Pressed Key Query. Defaults to True.
+        """
+        if clearQuery:
+            self.clearQuery()
+        self.__updateReady = True
+
+
+    def inputDisable(self, clearQuery: bool = True):
+        """
+        #### Disable Input for PlayerController
+
+        Args:
+            clearQuery (bool, optional): Clear Unhandled Pressed Key Query. Defaults to True.
+        """
+        self.__updateReady = False
+        if clearQuery:
+            self.clearQuery()
+
+
+    def clearQuery(self):
+        """
+        #### Clear Unhandled Pressed Key Query. 
+        """
+        for i in self.__PressedKey.values():
+            i.clear()
+
+
     def __keyPressedHook(self, event):
         """
         #### Handle Tkinter Key Pressed Event. 
@@ -105,11 +137,7 @@ class PlayerController:
 
         self.debugPrint(f"Key Pressed: {targetList}: {key}")
 
-        if self.isPressed(key):
-            return
-
-        self.__PressedKey[targetList].append(key)
-        self.__haveUpdate = True
+        self.__PressedKey[targetList].append((key, 1, int(time.time())))
 
 
     def __keyReleaseHook(self, event):
@@ -127,21 +155,19 @@ class PlayerController:
 
         self.debugPrint(f"Key Release: {targetList}: {key}")
 
-        if not self.isPressed(key):
-            return
-
-        self.__PressedKey[targetList].remove(key)
-        self.__haveUpdate = True
+        self.__PressedKey[targetList].append((key, 0, int(time.time())))
 
 
-    def __keyToAngle(self) -> List[str]:
+    def __keyToAngle(self, PressedKeys: List[str]) -> List[str]:
         """
-        #### Translate Current Pressed Key to Direction Base on Key Map. 
+        #### Translate Pressed Key to Direction Base on Key Map. 
+
+        Args:
+            PressedKeys (List[str]): Keys being Pressed. 
 
         Returns:
             List[str]: Directions: LEFT, RIGHT, UP, and/or DOWN. 
         """
-        PressedKeys = self.__PressedKey["MOVE_KEY"]
         MoveAngle = []
         if self.__keymap["MOVE_LEFT"] in PressedKeys:
             MoveAngle.append("LEFT")
@@ -165,18 +191,19 @@ class PlayerController:
         #### Thread that Handle Key Press to Object Movements. 
         """
         while True:
-            while not self.__haveUpdate:
-                pass
-            self.__updateReady = False
-            if self.__playerObject == None:
+            if not self.__updateReady:
                 pass
             if not self.havePressedKey():
                 pass
-            if not self.__playerObject.isMoveable():
-                pass
-            if len(self.__PressedKey["MOVE_KEY"]):
-                self.__playerObject.move(self.__keyToAngle())
-            self.__haveUpdate = False
+            self.__updateReady = False
+            if self.__playerObject != None:
+                if len(self.__PressedKey["MOVE"]) and self.__playerObject.isMoveable():
+                    PressedMoveKey = list(map(lambda x: x[0] if x[1] else None, self.__PressedKey["MOVE"]))
+                    while None in PressedMoveKey:
+                        PressedMoveKey.remove(None)
+                    if len(PressedMoveKey):
+                        self.__playerObject.move(self.__keyToAngle(PressedMoveKey))
+            self.clearQuery()
             self.__updateReady = True
 
 
@@ -187,4 +214,4 @@ class PlayerController:
         Args:
             message: Message to Print. 
         """
-        print(f"[{time.asctime()}]{message}") if self.__debug else None
+        print(f"[{time.asctime()}][PlayerController] {message}") if self.__debug else None
