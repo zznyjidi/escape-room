@@ -5,7 +5,7 @@ import config.keymap
 
 class PlayerController:
     __PressedKey = {}
-    __updateReady = False
+    __updateReady = True
     __haveUpdate = False
 
     def __init__(self, window: ttk.Window, debug: bool = False):
@@ -23,13 +23,14 @@ class PlayerController:
         self.__debug = debug
         self.__window = window
         self.setKeymap()
+        self.detachPlayer()
         self.__window.bind("<KeyPress>", self.__keyPressedHook)
         self.__window.bind("<KeyRelease>", self.__keyReleaseHook)
         self.__OperationThread =  threading.Thread(target=self.__ControllerOperationThread, daemon=True)
         self.__OperationThread.start()
 
 
-    def setKeymap(self, keymap: Dict[str] = config.keymap.keymap, keyToListMapper: Callable[[str], str] = config.keymap.keyToListMapper):
+    def setKeymap(self, keymap: Dict[str, str] = config.keymap.keymap, keyToListMapper: Callable[[str], str] = config.keymap.keyToListMapper):
         """
         #### Set Keymap For Player Controller
 
@@ -39,6 +40,8 @@ class PlayerController:
         """
         self.__keymap = keymap
         self.__keyToListMapper = keyToListMapper
+        for i in config.keymap.ListNameList:
+            self.__PressedKey[i] = []
 
 
     def havePressedKey(self) -> bool:
@@ -169,7 +172,7 @@ class PlayerController:
                 pass
             if not self.havePressedKey():
                 pass
-            if not self.__playerObject.ismMoveable:
+            if not self.__playerObject.isMoveable():
                 pass
             if len(self.__PressedKey["MOVE_KEY"]):
                 self.__playerObject.move(self.__keyToAngle())
