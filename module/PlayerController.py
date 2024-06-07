@@ -1,12 +1,12 @@
-from typing import Callable, Dict, List
+from typing import Callable, Dict, List, Tuple, Final
 import ttkbootstrap as ttk
 import threading, time
 import config.keymap
 
 class PlayerController:
-    __PressedKey = {}
-    __updateReady = True
-    __updateLocked = False
+    __PressedKey: Dict[str, list] = {}
+    __updateReady: bool = True
+    __updateLocked: bool = False
 
     def __init__(self, window: ttk.Window, debug: bool = False):
         """
@@ -20,13 +20,13 @@ class PlayerController:
             window (ttk.Window): _description_
             debug (bool, optional): _description_. Defaults to False.
         """
-        self.__debug = debug
-        self.__window = window
+        self.__debug: bool = debug
+        self.__window: ttk.Window = window
         self.setKeymap()
         self.detachPlayer()
         self.__window.bind("<KeyPress>", self.__keyPressedHook)
         self.__window.bind("<KeyRelease>", self.__keyReleaseHook)
-        self.__OperationThread =  threading.Thread(target=self.__ControllerOperationThread, daemon=True)
+        self.__OperationThread: threading.Thread =  threading.Thread(target=self.__ControllerOperationThread, daemon=True)
         self.__OperationThread.start()
 
 
@@ -38,8 +38,8 @@ class PlayerController:
             keymap (Dict[str], optional): Key Map Dictionary. Defaults to config.keymap.keymap.
             keyToListMapper (Callable[[str], str], optional): Key to KeyGroup List Mapper. Defaults to config.keymap.keyToListMapper.
         """
-        self.__keymap = keymap
-        self.__keyToListMapper = keyToListMapper
+        self.__keymap: Dict[str, str] = keymap
+        self.__keyToListMapper: Callable[[str], str] = keyToListMapper
         for i in config.keymap.ListNameList:
             self.__PressedKey[i] = []
 
@@ -51,7 +51,7 @@ class PlayerController:
         Returns:
             bool: Have Any Key Pressed. 
         """
-        keyPressed = sum(map(len, self.__PressedKey.values()))
+        keyPressed: int = sum(map(len, self.__PressedKey.values()))
         return bool(keyPressed)
 
 
@@ -66,7 +66,7 @@ class PlayerController:
             bool: Key is Pressed. 
         """
         for i in self.__PressedKey.values():
-            PressedKeys = list(map(lambda x: x[0], i))
+            PressedKeys: List[str] = list(map(lambda x: x[0], i))
             if key in PressedKeys:
                 return True
         return False
@@ -135,8 +135,8 @@ class PlayerController:
         """
         while not self.__updateReady:
             pass
-        key = event.keysym
-        targetList = self.__keyToListMapper(key)
+        key: str = event.keysym
+        targetList: str = self.__keyToListMapper(key)
 
         self.debugPrint(f"Key Pressed: {targetList}: {key}")
 
@@ -153,8 +153,8 @@ class PlayerController:
         """
         while not self.__updateReady:
             pass
-        key = event.keysym
-        targetList = self.__keyToListMapper(key)
+        key: str = event.keysym
+        targetList: str = self.__keyToListMapper(key)
 
         self.debugPrint(f"Key Release: {targetList}: {key}")
 
@@ -171,7 +171,7 @@ class PlayerController:
         Returns:
             List[str]: Directions: LEFT, RIGHT, UP, and/or DOWN. 
         """
-        MoveAngle = []
+        MoveAngle: List[str] = []
         if self.__keymap["MOVE_LEFT"] in PressedKeys:
             MoveAngle.append("LEFT")
         if self.__keymap["MOVE_RIGHT"] in PressedKeys:
