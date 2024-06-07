@@ -1,6 +1,6 @@
 from module.App import App
 from module.PlayerController import PlayerController
-from test.ExampleMoveableObject import MoveableObject
+from tester.ExampleMoveableObject import MoveableObject
 
 appMain = App()
 appController = PlayerController(appMain, debug=True)
