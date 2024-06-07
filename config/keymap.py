@@ -1,13 +1,14 @@
+from typing import Final, List, Dict
 
-MOVE_UP = 'w'
-MOVE_DOWN = 's'
-MOVE_LEFT = 'a'
-MOVE_RIGHT = 'd'
+MOVE_UP:    Final[str] = 'w'
+MOVE_DOWN:  Final[str] = 's'
+MOVE_LEFT:  Final[str] = 'a'
+MOVE_RIGHT: Final[str] = 'd'
 
-INTERACTIVE_SELECT = 'f'
-INTERACTIVE_CANCEL = 'x'
+INTERACTIVE_SELECT: Final[str] = 'f'
+INTERACTIVE_CANCEL: Final[str] = 'x'
 
-ListNameList = ["MOVE", "INTERACTIVE", "OTHER"]
+ListNameList: Final[List[str]] = ["MOVE", "INTERACTIVE", "OTHER"]
 def keyToListMapper(key: str) -> str:
     if key in [MOVE_UP, MOVE_DOWN, MOVE_LEFT, MOVE_RIGHT]:
         return "MOVE"
@@ -16,7 +17,7 @@ def keyToListMapper(key: str) -> str:
     else:
         return "OTHER"
 
-keymap = {
+keymap: Final[Dict[str, str]] = {
     "MOVE_UP": MOVE_UP,
     "MOVE_DOWN": MOVE_DOWN,
     "MOVE_LEFT": MOVE_LEFT,
