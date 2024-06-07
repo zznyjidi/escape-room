@@ -6,6 +6,7 @@ import config.keymap
 class PlayerController:
     __PressedKey = {}
     __updateReady = True
+    __updateLocked = False
 
     def __init__(self, window: ttk.Window, debug: bool = False):
         """
@@ -99,6 +100,7 @@ class PlayerController:
         """
         if clearQuery:
             self.clearQuery()
+        self.__updateLocked = False
         self.__updateReady = True
 
 
@@ -109,6 +111,7 @@ class PlayerController:
         Args:
             clearQuery (bool, optional): Clear Unhandled Pressed Key Query. Defaults to True.
         """
+        self.__updateLocked = True
         self.__updateReady = False
         if clearQuery:
             self.clearQuery()
@@ -204,7 +207,7 @@ class PlayerController:
                     if len(PressedMoveKey):
                         self.__playerObject.move(self.__keyToAngle(PressedMoveKey))
             self.clearQuery()
-            self.__updateReady = True
+            self.__updateReady = True if not self.__updateLocked else False
 
 
     def debugPrint(self, message):
