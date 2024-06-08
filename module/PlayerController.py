@@ -17,8 +17,8 @@ class PlayerController:
         To Set a Custom Keymap, Run `setKeymap(keyMap, listMap)`, see `config.keymap` for reference.  
 
         Args:
-            window (ttk.Window): _description_
-            debug (bool, optional): _description_. Defaults to False.
+            window (ttk.Window): Master Window that the PlayerController will listen the key presses. 
+            debug (bool, optional): Run in debug Mode. Defaults to False.
         """
         self.__debug: bool = debug
         self.__window: ttk.Window = window
