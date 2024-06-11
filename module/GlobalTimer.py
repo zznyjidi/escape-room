@@ -10,14 +10,15 @@ class timerDisplay:
         self.mins: int = 0
         self.secs: int = 0
 
-    def update(self, __timeSec: int):
+    def update(self, timeSec: int):
         """
-        #### Update Timer
+        #### Update Timer. 
 
         Args:
-            __timeSec (int): Time Left in Second. 
+            timeSec (int): Time Left in Second. 
         """
-        self.mins, self.secs = divmod(__timeSec, 60)
+        self.timeSec = timeSec
+        self.mins, self.secs = divmod(self.timeSec, 60)
         self.hour, self.mins = divmod(self.mins, 60)
 
 class timer:
@@ -45,7 +46,7 @@ class timer:
         #### Timer Updating Thread
         Use with `self.__timerThread = threading.Thread(target=self.timerUpdater, daemon=True)`
         """
-        while self.__timeSec and not self.__stopped:
+        while (self.__timeSec >= 0) and (not self.__stopped):
             while self.__paused:
                 pass
             for i in self.__updateObjects:
