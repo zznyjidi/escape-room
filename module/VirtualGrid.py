@@ -111,3 +111,15 @@ class VirtualGrid:
             message: Message to Print. 
         """
         print(f"[{time.asctime()}][VirtualGrid] {message}") if self.__debug else None
+
+    def __getitem__(self, index: int) -> List[Any]:
+        """
+        #### Access Items inside the virtual grid. 
+
+        Args:
+            index (int): Index of the Row. 
+
+        Returns:
+            List[Any]: Items inside the Row. 
+        """
+        return self.__items[index]
