@@ -1,17 +1,27 @@
-from typing import List, Any
+from typing import List, Tuple, Any
+from enum import Enum
 import time, warnings
 
+class RelativePosition(Enum):
+    CENTER = 0b0000
+    TOP = 0b1000
+    BOTTOM = 0b0100
+    LEFT = 0b0010
+    RIGHT = 0b0001
+
 class VirtualGrid:
-    def __init__(self, rows: int, cols: int, debug: bool = False):
+    def __init__(self, rows: int, cols: int, sideLength: int = 1, debug: bool = False):
         """
         #### Create a Grid that is {rows} height and {cols} wide. 
 
         Args:
             rows (int): The height of the grid. 
             cols (int): The width of the grid. 
+            sideLength (int): The side length of each element (square) in the grid. 
             debug (bool, optional): Debug Mode. Defaults to False.
         """
         self.__debug: bool = debug
+        self.sideLength: int = sideLength
         self.__items: List[List[Any]] = []
         for _ in range(rows):
             self.__items.append([None] * cols)
@@ -102,6 +112,33 @@ class VirtualGrid:
         except IndexError:
             warnings.warn(f"Trying to get a item from a index out of the grid {row}, {col}, Returning None. ")
             return None
+
+    def getCoordinate(self, row: int, col: int, point: RelativePosition) -> Tuple[int, int]:
+        """
+        #### Get position of element base on Index
+
+        Args:
+            row (int): Item position: Row. 
+            col (int): Item position: Column. 
+            point (RelativePosition): Position in the Block. Use multiple Position with | operator. 
+
+        Returns:
+            Tuple[int, int]: Relative Position to top left of the grid of the Item in Grid. 
+        """
+        if (len(self.__items) <= row) or (len(self.__items[0]) <= col):
+            warnings.warn(f"Trying to get Coordinate of item from a index out of the grid {row}, {col}, Returning -1. ")
+            return (-1, -1)
+        rowPos = row * self.sideLength
+        colPos = col * self.sideLength
+        if not int(format((point ^ RelativePosition.LEFT), "#06b")[2]):
+            rowPos += self.sideLength/2
+        if not int(format((point ^ RelativePosition.TOP), "#06b")[2]):
+            colPos += self.sideLength/2
+        if int(format((point ^ RelativePosition.RIGHT), "#06b")[2]):
+            rowPos += self.sideLength/2
+        if int(format((point ^ RelativePosition.BOTTOM), "#06b")[2]):
+            colPos += self.sideLength/2
+        return (rowPos, colPos)
 
     def debugPrint(self, message):
         """
