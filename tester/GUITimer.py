@@ -6,7 +6,7 @@ window = ttk.Window()
 
 GTimer = timer(10, lambda: None, True)
 GTimerDisplay = GUITimerDisplay(window)
-GTimerDisplay.TimerLabel.pack()
+GTimerDisplay.pack()
 
 GTimer.attachObject(GTimerDisplay)
 GTimer.start()
