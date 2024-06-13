@@ -21,6 +21,7 @@ class VirtualGrid:
             debug (bool, optional): Debug Mode. Defaults to False.
         """
         self.__debug: bool = debug
+        self.__size: Tuple[int, int] = (rows, cols)
         self.sideLength: int = sideLength
         self.__items: List[List[Any]] = []
         for _ in range(rows):
@@ -34,6 +35,7 @@ class VirtualGrid:
             newGrid (List[List[Any]]): 2D List that defines the Grid. 
         """
         self.__items = newGrid
+        self.__size = (len(newGrid), len(newGrid[0]))
 
     def exportGrid(self) -> List[List[Any]]:
         """
@@ -139,6 +141,15 @@ class VirtualGrid:
         if int(format((point ^ RelativePosition.BOTTOM), "#06b")[2]):
             colPos += self.sideLength/2
         return (rowPos, colPos)
+
+    def size(self) -> Tuple[int, int]:
+        """
+        #### Get the size of the Grid .
+
+        Returns:
+            Tuple[int, int]: Size of the Grid (Height, Width). 
+        """
+        return self.__size
 
     def debugPrint(self, message):
         """
