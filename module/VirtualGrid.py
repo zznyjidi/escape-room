@@ -1,8 +1,8 @@
 from typing import List, Tuple, Any
-from enum import Enum
+from enum import IntEnum
 import time, warnings
 
-class RelativePosition(Enum):
+class RelativePosition(IntEnum):
     CENTER = 0b0000
     TOP = 0b1000
     BOTTOM = 0b0100
@@ -130,17 +130,17 @@ class VirtualGrid:
         if (len(self.__items) <= row) or (len(self.__items[0]) <= col):
             warnings.warn(f"Trying to get Coordinate of item from a index out of the grid {row}, {col}, Returning -1. ")
             return (-1, -1)
-        rowPos = row * self.sideLength
-        colPos = col * self.sideLength
-        if not int(format((point ^ RelativePosition.LEFT), "#06b")[2]):
+        rowPos: int = row * self.sideLength
+        colPos: int = col * self.sideLength
+        if int(format((point ^ RelativePosition.LEFT), "#06b")[4]):
             rowPos += self.sideLength/2
-        if not int(format((point ^ RelativePosition.TOP), "#06b")[2]):
+        if int(format((point ^ RelativePosition.TOP), "#06b")[2]):
             colPos += self.sideLength/2
-        if int(format((point ^ RelativePosition.RIGHT), "#06b")[2]):
+        if not int(format((point ^ RelativePosition.RIGHT), "#06b")[5]):
             rowPos += self.sideLength/2
-        if int(format((point ^ RelativePosition.BOTTOM), "#06b")[2]):
+        if not int(format((point ^ RelativePosition.BOTTOM), "#06b")[3]):
             colPos += self.sideLength/2
-        return (rowPos, colPos)
+        return (int(rowPos), int(colPos))
 
     def size(self) -> Tuple[int, int]:
         """
