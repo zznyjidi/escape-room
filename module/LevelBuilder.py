@@ -1,4 +1,5 @@
 import ttkbootstrap as ttk
+import time
 from typing import Tuple, Union
 from enum import StrEnum
 from PIL import Image, ImageGrab
@@ -13,12 +14,13 @@ class PlaceHolder(StrEnum):
 class LevelBuilder(ttk.Frame):
     __items = {}
 
-    def __init__(self, master):
+    def __init__(self, master, debug: bool = False):
         """
         #### Create a ttk Canvas that can Generate Game Level based on a Level Describer File. 
 
         Args:
             master: Master Object of the Frame that Contains the Canvas. 
+            debug (bool, optional): Run in debug Mode. Defaults to False.
         """
         super().__init__(master)
         self.canvas = ttk.Canvas(self)
@@ -32,6 +34,7 @@ class LevelBuilder(ttk.Frame):
             level (VirtualGrid): A VirtualGrid that Describe the Level. 
         """
         self.__currentLevel = level
+        self.debugPrint(f"New VirtualGrid {level} Loaded. ")
 
     def saveLevel(self) -> VirtualGrid:
         """
@@ -66,15 +69,19 @@ class LevelBuilder(ttk.Frame):
             for y in range(levelSize[1]):
                 item: Union[None, str, LevelObject] = level.getItem(x, y)
                 itemCoordinate = level.getCoordinate(x, y, RelativePosition.TOP | RelativePosition.LEFT)
+                self.debugPrint(f"Item {item} Loaded From Grid {itemCoordinate}. ")
                 if not issubclass(type(item), LevelObject):
+                    self.debugPrint(f"Unable to Add Item {item} to Canvas, Skipped .")
                     continue
                 self.__items[f"{item.getObjectType()}_{x}_{y}"] = item.addToCanvas(self.canvas, itemCoordinate)
+                self.debugPrint(f"Item {item} Added to Canvas. ")
 
     def clearLevel(self):
         """
         #### Remove All Elements From the Canvas. 
         """
         self.canvas.delete("all")
+        self.debugPrint("Canvas is cleared. ")
 
     def toImage(self) -> Image:
         """
@@ -89,3 +96,12 @@ class LevelBuilder(ttk.Frame):
         yStop = yStart + self.canvas.winfo_height()
 
         return ImageGrab.grab().crop((xStart, yStart, xStop, yStop))
+
+    def debugPrint(self, message):
+        """
+        #### Print if in Debug Mode. 
+
+        Args:
+            message: Message to Print. 
+        """
+        print(f"[{time.asctime()}][LevelBuilder] {message}") if self.__debug else None
