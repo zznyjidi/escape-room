@@ -18,7 +18,8 @@ class TileLoader:
         self.blankHeight = blankHeight
         self.emptyFirstLine = emptyFirstRow
 
-    def getTile(self, row: int, col: int) -> PIL.Image:
+    def getTile(self, position: Tuple[int, int]) -> PIL.Image:
+        row, col = position
         xStart = (self.tileSize[0] * col)
         yStart = (self.tileSize[1] * row) + (self.blankHeight * (row + (1 if self.emptyFirstLine else 0)))
         xEnd = xStart + self.tileSize[0]
