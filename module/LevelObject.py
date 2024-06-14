@@ -9,7 +9,7 @@ class LevelObject:
 
     def addToCanvas(self, canvas: Canvas, coordinate: Tuple[int, int]):
         self.targetCanvas = canvas
-        self.targetCoordinate = coordinate
+        self.targetCoordinate = (coordinate[1], coordinate[0])
 
     def getObjectType(self) -> str:
         return self.objectType
