@@ -1,5 +1,5 @@
 from PIL import Image, ImageTk
-from ttkbootstrap import Canvas, NW
+from ttkbootstrap import Canvas, CENTER
 from typing import Tuple, List, Any, Callable
 
 class LevelObject:
@@ -33,4 +33,4 @@ class img(LevelObject):
         super().addToCanvas(canvas, coordinate)
         self.__PhotoImg.append(ImageTk.PhotoImage(self.object))
         self.__counter += 1
-        return canvas.create_image(self.targetCoordinate, anchor=NW, image=self.__PhotoImg[self.__counter])
+        return canvas.create_image(self.targetCoordinate, anchor=CENTER, image=self.__PhotoImg[self.__counter])

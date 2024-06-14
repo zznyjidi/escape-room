@@ -70,7 +70,7 @@ class LevelBuilder(ttk.Frame):
         for x in range(levelSize[0]):
             for y in range(levelSize[1]):
                 item: Union[None, str, LevelObject] = level.getItem(x, y)
-                itemCoordinate = level.getCoordinate(x, y, RelativePosition.TOP | RelativePosition.LEFT)
+                itemCoordinate = level.getCoordinate(x, y, RelativePosition.CENTER)
                 self.debugPrint(f"Item {item} Loaded From Grid {(x, y)}, at {itemCoordinate}. ")
                 if not issubclass(type(item), LevelObject):
                     self.debugPrint(f"Unable to Add Item {item} to Canvas, Skipped. ")
