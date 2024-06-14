@@ -70,12 +70,13 @@ class LevelBuilder(ttk.Frame):
             for y in range(levelSize[1]):
                 item: Union[None, str, LevelObject] = level.getItem(x, y)
                 itemCoordinate = level.getCoordinate(x, y, RelativePosition.TOP | RelativePosition.LEFT)
-                self.debugPrint(f"Item {item} Loaded From Grid {itemCoordinate}. ")
+                self.debugPrint(f"Item {item} Loaded From Grid {(x, y)}, at {itemCoordinate}. ")
                 if not issubclass(type(item), LevelObject):
-                    self.debugPrint(f"Unable to Add Item {item} to Canvas, Skipped .")
+                    self.debugPrint(f"Unable to Add Item {item} to Canvas, Skipped. ")
                     continue
                 self.__items[f"{item.getObjectType()}_{x}_{y}"] = item.addToCanvas(self.canvas, itemCoordinate)
                 self.debugPrint(f"Item {item} Added to Canvas. ")
+                self.getRootWindow().update()
 
     def clearLevel(self):
         """
@@ -97,6 +98,18 @@ class LevelBuilder(ttk.Frame):
         yStop = yStart + self.canvas.winfo_height()
 
         return ImageGrab.grab().crop((xStart, yStart, xStop, yStop))
+
+    def getRootWindow(self) -> ttk.Window:
+        """
+        #### Get the Root Window of the Widget. 
+
+        Returns:
+            ttk.Window: Root Window. 
+        """
+        rootWindow = self
+        while rootWindow.master != None:
+            rootWindow = rootWindow.master
+        return rootWindow
 
     def debugPrint(self, message):
         """
