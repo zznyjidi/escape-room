@@ -22,6 +22,7 @@ class LevelBuilder(ttk.Frame):
             master: Master Object of the Frame that Contains the Canvas. 
             debug (bool, optional): Run in debug Mode. Defaults to False.
         """
+        self.__debug: bool = debug
         super().__init__(master)
         self.canvas = ttk.Canvas(self)
         self.canvas.pack(fill='both', expand=True)
