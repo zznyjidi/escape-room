@@ -51,7 +51,7 @@ class LevelBuilder(ttk.Frame):
         Returns:
             bool: Have Item in specified position. 
         """
-        return self.__currentLevel[index[0]][index[1]] != None
+        return self.__currentLevel.haveItem(index[0], index[1]) != None
 
     def buildLevel(self):
         """
