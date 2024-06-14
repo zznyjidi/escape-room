@@ -19,6 +19,15 @@ class TileLoader:
         self.emptyFirstLine = emptyFirstRow
 
     def getTile(self, position: Tuple[int, int]) -> PIL.Image:
+        """
+        #### Get Tile from tilemap. 
+
+        Args:
+            position (Tuple[int, int]): Tile position on tilemap. 
+
+        Returns:
+            PIL.Image: Tile. 
+        """
         row, col = position
         xStart = (self.tileSize[0] * col)
         yStart = (self.tileSize[1] * row) + (self.blankHeight * (row + (1 if self.emptyFirstLine else 0)))
