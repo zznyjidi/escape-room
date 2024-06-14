@@ -13,7 +13,7 @@ level.loadLevel(levelGrid)
 
 level.pack()
 
-window.after(500, level.buildLevel)
-#window.after(5000, lambda: level.toImage().show())
+window.after(100, level.buildLevel)
+window.after(1000, lambda: level.toImage().show())
 
 window.mainloop()

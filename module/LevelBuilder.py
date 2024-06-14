@@ -1,8 +1,9 @@
 import ttkbootstrap as ttk
+import pyscreenshot as ImageGrab
 import time
 from typing import Tuple, Union
 from enum import StrEnum
-from PIL import Image, ImageGrab
+from PIL import Image
 from module.VirtualGrid import VirtualGrid, RelativePosition
 from module.LevelObject import *
 
