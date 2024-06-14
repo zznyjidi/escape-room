@@ -37,6 +37,7 @@ class VirtualGrid:
         """
         self.__items = newGrid
         self.__size = (len(newGrid), len(newGrid[0]))
+        self.debugPrint(f"New Grid Imported, Size: {self.__size}. \n{newGrid}")
 
     def exportGrid(self) -> List[List[LevelObject]]:
         """
