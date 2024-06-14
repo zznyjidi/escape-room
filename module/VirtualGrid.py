@@ -152,6 +152,15 @@ class VirtualGrid:
         """
         return self.__size
 
+    def pixelSize(self) -> Tuple[int, int]:
+        """
+        #### Get the size of the Grid in Pixel using sideLength. 
+
+        Returns:
+            Tuple[int, int]: Size of the Grid in Pixel. (Height, Width)
+        """
+        return tuple(map(lambda size: size * self.sideLength, self.__size))
+
     def debugPrint(self, message):
         """
         #### Print if in Debug Mode. 

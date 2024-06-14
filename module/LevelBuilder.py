@@ -1,6 +1,7 @@
 import ttkbootstrap as ttk
 from typing import Tuple, Union
 from enum import StrEnum
+from PIL import Image, ImageGrab
 from module.VirtualGrid import VirtualGrid, RelativePosition
 from module.LevelObject import *
 
@@ -59,6 +60,8 @@ class LevelBuilder(ttk.Frame):
         """
         level: VirtualGrid = self.__currentLevel
         levelSize: Tuple[int, int] = level.size()
+        levelSizePixel: Tuple[int, int] = level.pixelSize()
+        self.canvas.configure(width=levelSizePixel[1], height=levelSizePixel[0])
         for x in range(levelSize[0]):
             for y in range(levelSize[1]):
                 item: Union[None, str, LevelObject] = level.getItem(x, y)
@@ -72,3 +75,17 @@ class LevelBuilder(ttk.Frame):
         #### Remove All Elements From the Canvas. 
         """
         self.canvas.delete("all")
+
+    def toImage(self) -> Image:
+        """
+        #### Generate a Image Using the Canvas. 
+
+        Returns:
+            Image: Image of the Canvas. 
+        """
+        xStart = self.winfo_rootx()
+        yStart = self.winfo_rooty()
+        xStop = xStart + self.canvas.winfo_width()
+        yStop = yStart + self.canvas.winfo_height()
+
+        return ImageGrab.grab().crop((xStart, yStart, xStop, yStop))
