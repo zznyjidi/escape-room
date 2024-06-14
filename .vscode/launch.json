@@ -15,6 +15,10 @@
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
             "program": "${file}",
             "console": "integratedTerminal"
         }
