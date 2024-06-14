@@ -2,6 +2,7 @@ from typing import List, Tuple
 from module.LevelObject import LevelObject
 from enum import IntEnum
 import time, warnings
+import config.drawing
 
 class RelativePosition(IntEnum):
     CENTER = 0b0000
@@ -11,7 +12,7 @@ class RelativePosition(IntEnum):
     RIGHT = 0b0001
 
 class VirtualGrid:
-    def __init__(self, rows: int, cols: int, sideLength: int = 1, debug: bool = False):
+    def __init__(self, rows: int, cols: int, sideLength: int = config.drawing.gridBlockSize, debug: bool = False):
         """
         #### Create a Grid that is {rows} height and {cols} wide. 
 

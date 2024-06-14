@@ -1,5 +1,7 @@
 from typing import Dict, Tuple
 
+gridBlockSize: int = 100
+
 tileConfig: Dict[str, Tuple[int, int]] = {
     "STAND_FRONT": (0, 4),
     "STAND_BACK":  (0, 2),
