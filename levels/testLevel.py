@@ -1,7 +1,9 @@
 from module.LevelObject import img
 
+TEST_IMG = img("assets/VERYIMPORTANT.png", (100, 100))
+
 describer = [
-    [img("assets/VERYIMPORTANT.png", (100, 100)), None, img("assets/VERYIMPORTANT.png", (100, 100)), img("assets/VERYIMPORTANT.png", (100, 100))], 
-    [img("assets/VERYIMPORTANT.png", (100, 100)), None, None, img("assets/VERYIMPORTANT.png", (100, 100))],
-    [img("assets/VERYIMPORTANT.png", (100, 100)), img("assets/VERYIMPORTANT.png", (100, 100)), None, img("assets/VERYIMPORTANT.png", (100, 100))]
+    [TEST_IMG, None,     TEST_IMG,  TEST_IMG], 
+    [TEST_IMG, None,     None,      TEST_IMG],
+    [TEST_IMG, TEST_IMG, None,      TEST_IMG]
 ]
