@@ -15,6 +15,12 @@ class PlaceHolder(StrEnum):
 
 collisionItems = [PlaceHolder.LL_TL, PlaceHolder.LL_BR, PlaceHolder.HITBOX]
 def wrapWithBoarder(levelDescriber: List[List[LevelObject | str | None]]):
+    """
+    #### Warp The Level Describer with HitBoxes. 
+
+    Args:
+        levelDescriber (List[List[LevelObject  |  str  |  None]]): Level Describer. 
+    """
     for i in levelDescriber:
         i.insert(0, PlaceHolder.HITBOX)
         i.append(PlaceHolder.HITBOX)

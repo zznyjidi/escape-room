@@ -8,16 +8,35 @@ import ttkbootstrap as ttk
 import time
 
 class MoveableObject:
-    __debug = False
-
     def move(self, angle: List[str]):
+        """
+        #### Move the Object. 
+
+        Args:
+            angle (List[str]): Angle to Move. (LEFT, RIGHT, UP, DOWN)
+        """
         self.lastMove: List[str] = angle
 
     def isMoveable(self) -> bool:
+        """
+        #### The Object is currently Moveable. 
+
+        Returns:
+            bool: Is Moveable. 
+        """
         return True
 
 class Player(MoveableObject):
     def __init__(self, master: LevelBuilder, tiles: TileLoader, defaultLocation: Tuple[int, int], debug: bool = False):
+        """
+        #### Create a Player Object. 
+
+        Args:
+            master (LevelBuilder): Level Builder to Add the Player. 
+            tiles (TileLoader): Tiles to Use for the Character. 
+            defaultLocation (Tuple[int, int]): Location when added. 
+            debug (bool, optional): Run in debug Mode. Defaults to False.
+        """
         self.__debug = debug
         self.master = master
         self.tiles = tiles
@@ -28,6 +47,12 @@ class Player(MoveableObject):
         self.canvasImage = master.canvas.create_image(locationX, locationY, anchor=ttk.CENTER, image=self.currentFrame)
 
     def move(self, angle: List[str]):
+        """
+        #### Move the Player Object. 
+
+        Args:
+            angle (List[str]): Angle to Move. (LEFT, RIGHT, UP, DOWN)
+        """
         deltaX = 0
         deltaY = 0
         if "LEFT" in angle:
