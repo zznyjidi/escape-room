@@ -18,7 +18,7 @@ class LevelObject:
         return self.objectType
 
     def isInteractive(self) -> bool:
-        return self.interactiveFunction != None
+        return not self.interactiveFunction is None
 
 class img(LevelObject):
     __counter: int = -1

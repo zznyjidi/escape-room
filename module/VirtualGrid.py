@@ -59,7 +59,7 @@ class VirtualGrid:
             item (LevelObject): Item to Add to the grid. 
             overwrite (bool, optional): Overwrite if the position already have a item. Defaults to False.
         """
-        if (self.__items[row][col] != None):
+        if (not self.__items[row][col] is None):
             self.debugPrint(f"Overwriting a item in {row}, {col}. Original: {item}")
             if (not overwrite):
                 warnings.warn(f"Trying to Overwrite {row}, {col} without specify overwrite, item not updated. ")
@@ -96,7 +96,7 @@ class VirtualGrid:
             bool: Have item on position. 
         """
         try:
-            return self.__items[row][col] != None
+            return not self.__items[row][col] is None
         except IndexError:
             warnings.warn(f"Trying to check a index out of the grid {row}, {col}. ")
             return False

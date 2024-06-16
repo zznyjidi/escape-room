@@ -133,12 +133,12 @@ class PlayerController:
         Args:
             event: Event From Tkinter. 
         """
-        while not self.__updateReady:
-            pass
         key: str = event.keysym
         targetList: str = self.__keyToListMapper(key)
-
         self.debugPrint(f"Key Pressed: {targetList}: {key}")
+
+        while not self.__updateReady:
+            pass
 
         self.__PressedKey[targetList].append((key, 1, int(time.time())))
 
@@ -151,12 +151,12 @@ class PlayerController:
         Args:
             event: Event From Tkinter. 
         """
-        while not self.__updateReady:
-            pass
         key: str = event.keysym
         targetList: str = self.__keyToListMapper(key)
-
         self.debugPrint(f"Key Release: {targetList}: {key}")
+
+        while not self.__updateReady:
+            pass
 
         self.__PressedKey[targetList].append((key, 0, int(time.time())))
 
@@ -199,7 +199,7 @@ class PlayerController:
             if not self.havePressedKey():
                 pass
             self.__updateReady = False
-            if self.__playerObject != None:
+            if not self.__playerObject is None:
                 if len(self.__PressedKey["MOVE"]) and self.__playerObject.isMoveable():
                     PressedMoveKey = list(map(lambda x: x[0] if x[1] else None, self.__PressedKey["MOVE"]))
                     while None in PressedMoveKey:
