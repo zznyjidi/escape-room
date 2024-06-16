@@ -137,9 +137,6 @@ class PlayerController:
         targetList: str = self.__keyToListMapper(key)
         self.debugPrint(f"Key Pressed: {targetList}: {key}")
 
-        while not self.__updateReady:
-            pass
-
         self.__PressedKey[targetList].append((key, 1, int(time.time())))
 
 
@@ -154,9 +151,6 @@ class PlayerController:
         key: str = event.keysym
         targetList: str = self.__keyToListMapper(key)
         self.debugPrint(f"Key Release: {targetList}: {key}")
-
-        while not self.__updateReady:
-            pass
 
         self.__PressedKey[targetList].append((key, 0, int(time.time())))
 
