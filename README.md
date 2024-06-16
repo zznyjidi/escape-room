@@ -9,7 +9,7 @@ G10 Computer Science Final Project
 
     ```shell
     cd <PROGRAM_LOCATION>
-    pip install -r requirements.txt # Will be Add Later
+    pip install -r requirements.txt
     ```
 
 ## Run
