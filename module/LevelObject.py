@@ -60,7 +60,7 @@ class img(LevelObject):
             collision (bool, optional): Have a Hitbox. Defaults to True.
         """
         self.objectType = "IMAGE"
-        self.interactive = interactive
+        self.interactiveFunction = interactive
         self.collision = collision
         self.object: Image = Image.open(imgPath)
         self.object.thumbnail(size)
@@ -80,3 +80,9 @@ class img(LevelObject):
         self.__PhotoImg.append(ImageTk.PhotoImage(self.object))
         self.__counter += 1
         return canvas.create_image(self.targetCoordinate, anchor=CENTER, image=self.__PhotoImg[self.__counter])
+
+class interact(LevelObject):
+    def __init__(self, interactive: Callable[[None], None], collision: bool = False):
+        self.objectType = "INTERACT"
+        self.interactiveFunction = interactive
+        self.collision = collision
