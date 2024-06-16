@@ -1,27 +1,22 @@
 from module.LevelBuilder import LevelBuilder
-from module.VirtualGrid import VirtualGrid
 from module.PlayerController import PlayerController
 from module.MovableObject import Player
 from module.TileLoader import TileLoader
 import levels.testLevel
-import config.drawing
 import ttkbootstrap as ttk
 
 window = ttk.Window()
 
-Controller = PlayerController(window, True)
+Controller = PlayerController(window, debug=True)
 
-levelGrid = VirtualGrid(3, 4, debug=True)
-levelGrid.importGrid(levels.testLevel.describer)
-
-level = LevelBuilder(window, True)
-level.loadLevel(levelGrid)
+level = LevelBuilder(window, debug=True)
+level.loadLevel(levels.testLevel.levelGrid)
 level.buildLevel()
 
-player = Player(level.canvas, TileLoader("assets/player_tile_32.png", tileSize=(32, 48), blankHeight=16, emptyFirstRow=True), (config.drawing.gridBlockSize/2, config.drawing.gridBlockSize/2))
+player = Player(level, TileLoader("assets/player_tile_32.png", tileSize=(32, 48), blankHeight=16, emptyFirstRow=True), (2, 1), debug=True)
 Controller.attachPlayer(player)
 
-level.pack()
+level.pack(fill="both", expand=True)
 
 #window.after(1000, lambda: level.toImage().show())
 

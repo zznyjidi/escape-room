@@ -1,16 +1,26 @@
 import ttkbootstrap as ttk
 import pyscreenshot as ImageGrab
 import time
-from typing import Tuple, Union
+from typing import List, Tuple, Union
 from enum import StrEnum
 from PIL import Image
 from module.VirtualGrid import VirtualGrid, RelativePosition
-from module.LevelObject import *
+from module.LevelObject import LevelObject
 
 class PlaceHolder(StrEnum):
-    IMAGE_LAST_LEVEL_TL = "IMAGE_LAST_LEVEL_TOP_LEFT"
-    IMAGE_LAST_LEVEL_BR = "IMAGE_LAST_LEVEL_BOTTOM_RIGHT"
-    COLLISION_TRIGGER = "COLLISION_TRIGGER"
+    LL_TL = "IMAGE_LAST_LEVEL_TOP_LEFT"
+    LL_BR = "IMAGE_LAST_LEVEL_BOTTOM_RIGHT"
+    HITBOX = "HITBOX"
+    SPAWN = "SPAWN_POINT"
+
+collisionItems = [PlaceHolder.LL_TL, PlaceHolder.LL_BR, PlaceHolder.HITBOX]
+def wrapWithBoarder(levelDescriber: List[List[LevelObject | str | None]]):
+    for i in levelDescriber:
+        i.insert(0, PlaceHolder.HITBOX)
+        i.append(PlaceHolder.HITBOX)
+    levelWidth = len(levelDescriber[0])
+    levelDescriber.insert(0, [PlaceHolder.HITBOX]*levelWidth)
+    levelDescriber.append([PlaceHolder.HITBOX]*levelWidth)
 
 class LevelBuilder(ttk.Frame):
     __items = {}
@@ -26,7 +36,7 @@ class LevelBuilder(ttk.Frame):
         self.__debug: bool = debug
         super().__init__(master)
         self.canvas = ttk.Canvas(self)
-        self.canvas.pack(fill='both', expand=True)
+        self.canvas.pack(fill='none', expand=True)
 
     def loadLevel(self, level: VirtualGrid):
         """
@@ -52,12 +62,45 @@ class LevelBuilder(ttk.Frame):
         #### Check if there is a item in the specified position. 
 
         Args:
-            index (Tuple[int, int]): Position to Check fro item. (Row, Col)
+            index (Tuple[int, int]): Position to Check fro item. (X, Y)
 
         Returns:
             bool: Have Item in specified position. 
         """
-        return self.__currentLevel.haveItem(index[0], index[1]) != None
+        return not self.__currentLevel.haveItem(index[1], index[0]) is None
+
+    def haveHitBox(self, index: Tuple[int, int]) -> bool:
+        """
+        #### Check if Collision will trigger on the given block. 
+
+        Args:
+            index (Tuple[int, int]): Block to check. 
+
+        Returns:
+            bool: Have collision. 
+        """
+        if not self.haveItem(index):
+            return False
+        item = self.__currentLevel.getItem(index[1], index[0])
+        if item in collisionItems:
+            return True
+        if isinstance(item, LevelObject):
+            return item.collision
+        return False
+
+    def getBlockCoordinate(self, row: int, col: int, point: RelativePosition) -> Tuple[int, int]:
+        """
+        #### Get Coordinate From Grid. 
+
+        Args:
+            row (int): Item position: Row. 
+            col (int): Item position: Column. 
+            point (RelativePosition): Position in the Block. Use multiple Position with | operator. 
+
+        Returns:
+            Tuple[int, int]: Relative Position to top left of the grid of the Item in Grid. 
+        """
+        return self.__currentLevel.getCoordinate(row, col, point)
 
     def buildLevel(self):
         """
@@ -72,7 +115,7 @@ class LevelBuilder(ttk.Frame):
                 item: Union[None, str, LevelObject] = level.getItem(x, y)
                 itemCoordinate = level.getCoordinate(x, y, RelativePosition.CENTER)
                 self.debugPrint(f"Item {item} Loaded From Grid {(x, y)}, at {itemCoordinate}. ")
-                if not issubclass(type(item), LevelObject):
+                if not isinstance(item, LevelObject):
                     self.debugPrint(f"Unable to Add Item {item} to Canvas, Skipped. ")
                     continue
                 self.__items[f"{item.getObjectType()}_{x}_{y}"] = item.addToCanvas(self.canvas, itemCoordinate)
@@ -108,7 +151,7 @@ class LevelBuilder(ttk.Frame):
             ttk.Window: Root Window. 
         """
         rootWindow = self
-        while rootWindow.master != None:
+        while not rootWindow.master is None:
             rootWindow = rootWindow.master
         return rootWindow
 

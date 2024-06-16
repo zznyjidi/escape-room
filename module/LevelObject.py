@@ -6,6 +6,7 @@ class LevelObject:
     objectType: str = "BASE"
     targetCanvas: Canvas
     targetCoordinate: Tuple[int, int]
+    collision = True
 
     def addToCanvas(self, canvas: Canvas, coordinate: Tuple[int, int]):
         self.targetCanvas = canvas
@@ -23,9 +24,10 @@ class LevelObject:
 class img(LevelObject):
     __counter: int = -1
     __PhotoImg: List[ImageTk.PhotoImage] = []
-    def __init__(self, imgPath: str, size: Tuple[int, int], interactive: Callable[[None], None] | None = None):
+    def __init__(self, imgPath: str, size: Tuple[int, int], interactive: Callable[[None], None] | None = None, collision: bool = True):
         self.objectType = "IMAGE"
         self.interactive = interactive
+        self.collision = collision
         self.object: Image = Image.open(imgPath)
         self.object.thumbnail(size)
 
