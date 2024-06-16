@@ -5,12 +5,13 @@ import config.drawing
 
 TEST_IMG = img("assets/VERYIMPORTANT.png", (config.drawing.gridBlockSize, config.drawing.gridBlockSize))
 
-describer = [
+NEXT_LEVEL = (4, 3)
+DESCRIBER = [
     [TEST_IMG, PH.SPAWN, TEST_IMG,  TEST_IMG], 
     [TEST_IMG, None,     None,      TEST_IMG],
     [TEST_IMG, TEST_IMG, None,      TEST_IMG]
 ]
 
-wrapWithBoarder(describer)
-levelGrid = VirtualGrid(5, 6)
-levelGrid.importGrid(describer)
+wrapWithBoarder(DESCRIBER)
+LEVEL = VirtualGrid(5, 6)
+LEVEL.importGrid(DESCRIBER)
