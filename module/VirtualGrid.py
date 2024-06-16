@@ -29,34 +29,34 @@ class VirtualGrid:
         for _ in range(rows):
             self.__items.append([None] * cols)
 
-    def importGrid(self, newGrid: List[List[LevelObject]]):
+    def importGrid(self, newGrid: List[List[LevelObject | str | None]]):
         """
         #### Import a Grid From a 2D List. 
 
         Args:
-            newGrid (List[List[LevelObject]]): 2D List that defines the Grid. 
+            newGrid (List[List[LevelObject | str | None]]): 2D List that defines the Grid. 
         """
         self.__items = newGrid
         self.__size = (len(newGrid), len(newGrid[0]))
         self.debugPrint(f"New Grid Imported, Size: {self.__size}. \n{newGrid}")
 
-    def exportGrid(self) -> List[List[LevelObject]]:
+    def exportGrid(self) -> List[List[LevelObject | str | None]]:
         """
         #### Export the Grid to a 2D List. 
 
         Returns:
-            List[List[LevelObject]]: 2D List that defines the Grid. 
+            List[List[LevelObject | str | None]]: 2D List that defines the Grid. 
         """
         return self.__items
 
-    def addItem(self, row: int, col: int, item: LevelObject, *, overwrite: bool = False):
+    def addItem(self, row: int, col: int, item: LevelObject | str, *, overwrite: bool = False):
         """
         #### Add item to Grid. 
 
         Args:
             row (int): Item position: Row. 
             col (int): Item position: Column. 
-            item (LevelObject): Item to Add to the grid. 
+            item (LevelObject | str): Item to Add to the grid. 
             overwrite (bool, optional): Overwrite if the position already have a item. Defaults to False.
         """
         if (not self.__items[row][col] is None):
@@ -101,7 +101,7 @@ class VirtualGrid:
             warnings.warn(f"Trying to check a index out of the grid {row}, {col}. ")
             return False
 
-    def getItem(self, row: int, col: int) -> LevelObject:
+    def getItem(self, row: int, col: int) -> LevelObject | str | None:
         """
         #### Get a Item from the Grid. 
 
@@ -110,7 +110,7 @@ class VirtualGrid:
             col (int): Item position: Column. 
 
         Returns:
-            LevelObject: Item on the position. 
+            LevelObject | str | None: Item on the position. 
         """
         try:
             return self.__items[row][col]
@@ -172,7 +172,7 @@ class VirtualGrid:
         """
         print(f"[{time.asctime()}][VirtualGrid] {message}") if self.__debug else None
 
-    def __getitem__(self, index: int) -> List[LevelObject]:
+    def __getitem__(self, index: int) -> List[LevelObject | str | None]:
         """
         #### Access Items inside the virtual grid. 
 
