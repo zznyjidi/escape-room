@@ -109,6 +109,7 @@ class Player(MoveableObject):
         targetObject = self.getPointedItem()
         if not self.isInteractive(targetObject):
             self.debugPrint(f"Trying to Interact with Non-interactive Object {targetObject}. Did nothing. ")
+            return
         targetObject.interactive()()
 
     def getBlockDelta(self, angle: List[str]) -> Tuple[int, int]:
