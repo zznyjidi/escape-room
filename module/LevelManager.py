@@ -1,6 +1,6 @@
-from module.VirtualGrid import VirtualGrid
 from module.LevelBuilder import LevelBuilder, PlaceHolder
 from module.LevelObject import interact
+from module.LevelDescriber import LevelDescriber
 from module.MovableObject import Player
 from module.GlobalTimer import timer
 from module.TileLoader import TileLoader
@@ -19,7 +19,7 @@ class LevelManager:
         self.__debug = debug
         self.currentLevel = 0
         self.currentTiles = 0
-        self.levelGrids: List[VirtualGrid] = []
+        self.levels: List[LevelDescriber] = []
         self.playerTiles: List[TileLoader] = []
         self.globalTimer = None
 
@@ -48,7 +48,7 @@ class LevelManager:
         """
         self.globalTimer = timer(timeSec, lambda: self.failed("TIMER_END"), debug=self.__debug)
 
-    def addLevel(self, *levels):
+    def addLevel(self, *levels: LevelDescriber):
         """
         #### Add a Level to the Game. 
 
@@ -56,8 +56,8 @@ class LevelManager:
             levels (Module): Level Describer File. (See testLevel for Examples. )
         """
         for level in levels:
-            self.levelGrids.append(level.LEVEL)
-            self.levelGrids[-1].addItem(level.NEXT_LEVEL[1], level.NEXT_LEVEL[0], interact(self.nextLevel, True), overwrite=True)
+            self.levels.append(level)
+            self.levels[-1].GRID.addItem(level.NEXT_LEVEL[1], level.NEXT_LEVEL[0], interact(self.nextLevel, True), overwrite=True)
 
     def addPlayerTiles(self, tiles: TileLoader):
         """
@@ -72,20 +72,23 @@ class LevelManager:
         """
         #### Build Current Level. 
         """
-        self.levelBuilder.loadLevel(self.levelGrids[self.currentLevel])
+        self.levelBuilder.loadLevel(self.levels[self.currentLevel].GRID)
         self.levelBuilder.buildLevel()
         self.playerObject.drawOnCanvas(self.levelBuilder.param[PlaceHolder.SPAWN])
         self.playerController.attachPlayer(self.playerObject)
 
     def nextLevel(self):
         """
-        #### Go to Next Level if exist or to Success. 
+        #### Go to Next Level if exist or to Success when Current Level is Unlocked. 
         Bind to NEXT_LEVEL by Default. 
         """
+        if not self.levels[self.currentLevel].UNLOCKED:
+            self.levels.LOCKED()
+            return
         self.currentLevel += 1
         self.playerController.detachPlayer()
         self.levelBuilder.clearLevel()
-        if self.currentLevel < len(self.levelGrids):
+        if self.currentLevel < len(self.levels):
             self.buildCurrentLevel()
         else:
             self.success()
