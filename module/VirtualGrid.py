@@ -36,7 +36,9 @@ class VirtualGrid:
         Args:
             newGrid (List[List[LevelObject | str | None]]): 2D List that defines the Grid. 
         """
-        self.__items = newGrid
+        self.__items = []
+        for row in newGrid:
+            self.__items.append(row[:])
         self.__size = (len(newGrid), len(newGrid[0]))
         self.debugPrint(f"New Grid Imported, Size: {self.__size}. \n{newGrid}")
 
