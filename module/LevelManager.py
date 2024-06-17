@@ -21,6 +21,7 @@ class LevelManager:
         self.currentTiles = 0
         self.levelGrids: List[VirtualGrid] = []
         self.playerTiles: List[TileLoader] = []
+        self.globalTimer = None
 
     def initGame(self, master: tk.Misc):
         """
@@ -39,6 +40,7 @@ class LevelManager:
         self.playerController.attachPlayer(self.playerObject)
 
         self.levelBuilder.pack(fill="both", expand=True)
+        self.globalTimer.start() if not self.globalTimer is None else None
 
     def addTimer(self, timeSec: int):
         """
