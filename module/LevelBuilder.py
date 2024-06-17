@@ -116,10 +116,10 @@ class LevelBuilder(ttk.Frame):
         levelSize: Tuple[int, int] = level.size()
         levelSizePixel: Tuple[int, int] = level.pixelSize()
         self.canvas.configure(width=levelSizePixel[1], height=levelSizePixel[0])
-        for x in range(levelSize[0]):
-            for y in range(levelSize[1]):
-                item: Union[None, str, LevelObject] = level.getItem(x, y)
-                itemCoordinate = level.getCoordinate(x, y, RelativePosition.CENTER)
+        for y in range(levelSize[0]):
+            for x in range(levelSize[1]):
+                item: Union[None, str, LevelObject] = level.getItem(y, x)
+                itemCoordinate = level.getCoordinate(y, x, RelativePosition.CENTER)
                 self.debugPrint(f"Item {item} Loaded From Grid {(x, y)}, at {itemCoordinate}. ")
                 if not isinstance(item, LevelObject):
                     self.debugPrint(f"Unable to Add Item {item} to Canvas, Skipped. ")
