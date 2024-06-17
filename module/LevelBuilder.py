@@ -40,6 +40,7 @@ class LevelBuilder(ttk.Frame):
             debug (bool, optional): Run in debug Mode. Defaults to False.
         """
         self.__debug: bool = debug
+        self.param = {}
         super().__init__(master)
         self.canvas = ttk.Canvas(self)
         self.canvas.pack(fill='none', expand=True)
@@ -121,12 +122,15 @@ class LevelBuilder(ttk.Frame):
                 item: Union[None, str, LevelObject] = level.getItem(y, x)
                 itemCoordinate = level.getCoordinate(y, x, RelativePosition.CENTER)
                 self.debugPrint(f"Item {item} Loaded From Grid {(x, y)}, at {itemCoordinate}. ")
-                if not isinstance(item, LevelObject):
-                    self.debugPrint(f"Unable to Add Item {item} to Canvas, Skipped. ")
-                    continue
-                self.__items[f"{item.getObjectType()}_{x}_{y}"] = item.addToCanvas(self.canvas, itemCoordinate)
-                self.debugPrint(f"Item {item} Added to Canvas. ")
-                self.getRootWindow().update()
+                if isinstance(item, LevelObject):
+                    self.__items[f"{item.getObjectType()}_{x}_{y}"] = item.addToCanvas(self.canvas, itemCoordinate)
+                    self.debugPrint(f"Item {item} Added to Canvas. ")
+                    self.getRootWindow().update()
+                elif item in [PlaceHolder.SPAWN, PlaceHolder.LL_TL, PlaceHolder.LL_BR]:
+                    self.param[item] = (x, y)
+                    self.debugPrint(f"Coordinate Saved for {item}. ")
+                else:
+                    self.debugPrint(f"No Process Needed for {item}, Skipped. ")
 
     def clearLevel(self):
         """
