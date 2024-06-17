@@ -192,16 +192,25 @@ class PlayerController:
                 pass
             if not self.havePressedKey():
                 pass
-            self.__updateReady = False
+
+            PressedKeys = {}
+            for keyList, keys in self.__PressedKey.items():
+                PressedKeys[keyList] = keys[:]
+                keys.clear()
+
             if not self.__playerObject is None:
-                if len(self.__PressedKey["MOVE"]) and self.__playerObject.isMoveable():
-                    PressedMoveKey = list(map(lambda x: x[0] if x[1] else None, self.__PressedKey["MOVE"]))
-                    while None in PressedMoveKey:
-                        PressedMoveKey.remove(None)
-                    if len(PressedMoveKey):
-                        self.__playerObject.move(self.__keyToAngle(PressedMoveKey))
-            self.clearQuery()
-            self.__updateReady = True if not self.__updateLocked else False
+                if len(PressedKeys["MOVE"]) and self.__playerObject.isMoveable():
+                    actions = []
+                    CurrentPressedKeys = []
+                    for keyPress in PressedKeys["MOVE"]:
+                        if keyPress[1]:
+                            CurrentPressedKeys.append(keyPress[0]) if not keyPress[0] in CurrentPressedKeys else None
+                        else:
+                            CurrentPressedKeys.remove(keyPress[0]) if keyPress[0] in CurrentPressedKeys else None
+                        if len(CurrentPressedKeys):
+                            actions.append(CurrentPressedKeys[:])
+                    for action in actions:
+                        self.__playerObject.move(self.__keyToAngle(action))
 
 
     def debugPrint(self, message):
