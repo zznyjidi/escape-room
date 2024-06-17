@@ -5,7 +5,7 @@ import config.drawing
 
 TEST_IMG = img("assets/VERYIMPORTANT.png", (config.drawing.gridBlockSize, config.drawing.gridBlockSize))
 
-NEXT_LEVEL = (4, 3)
+NEXT_LEVEL = (3, 4)
 DESCRIBER = [
     [TEST_IMG, PH.SPAWN, TEST_IMG,  TEST_IMG], 
     [TEST_IMG, None,     None,      TEST_IMG],
