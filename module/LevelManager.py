@@ -83,7 +83,7 @@ class LevelManager:
         Bind to NEXT_LEVEL by Default. 
         """
         if not self.levels[self.currentLevel].UNLOCKED:
-            self.levels.LOCKED()
+            self.levels[self.currentLevel].LOCKED()
             return
         self.currentLevel += 1
         self.playerController.detachPlayer()
