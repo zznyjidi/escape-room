@@ -6,17 +6,29 @@ from module.GlobalTimer import timer
 from module.TileLoader import TileLoader
 from module.PlayerController import PlayerController
 from typing import List
-import levels.testLevel
+import tkinter as tk
 
 class LevelManager:
     def __init__(self, debug: bool = False):
+        """
+        #### A Manager that Helps you Manager All Levels. 
+
+        Args:
+            debug (bool, optional): Run in Debug Mode. Defaults to False.
+        """
         self.__debug = debug
         self.currentLevel = 0
         self.currentTiles = 0
         self.levelGrids: List[VirtualGrid] = []
         self.playerTiles: List[TileLoader] = []
 
-    def initGame(self, master):
+    def initGame(self, master: tk.Misc):
+        """
+        #### Initialise the First Level and Pack the Frame. 
+
+        Args:
+            master (tk.Misc): Window/Frame to Pack the Game. 
+        """
         self.levelBuilder = LevelBuilder(master, debug=self.__debug)
         self.playerController = PlayerController(master, debug=self.__debug)
         self.playerObject = Player(self.levelBuilder, self.playerTiles[self.currentTiles], debug=self.__debug)
@@ -29,13 +41,31 @@ class LevelManager:
         self.levelBuilder.pack(fill="both", expand=True)
 
     def addTimer(self, timeSec: int):
+        """
+        #### Add a Timer to the Game. 
+
+        Args:
+            timeSec (int): Seconds that the Timer will have. 
+        """
         self.globalTimer = timer(timeSec, lambda: self.failed("TIMER_END"), debug=self.__debug)
 
     def addLevel(self, level):
+        """
+        #### Add a Level to the Game. 
+
+        Args:
+            level (Module): Level Describer File. (See testLevel for Examples. )
+        """
         self.levelGrids.append(level.LEVEL)
         self.levelGrids[-1].addItem(level.NEXT_LEVEL[1], level.NEXT_LEVEL[0], interact(self.nextLevel, True), overwrite=True)
 
     def addPlayerTiles(self, tiles: TileLoader):
+        """
+        #### Add Tiles for Player. 
+
+        Args:
+            tiles (TileLoader): New Tiles. 
+        """
         self.playerTiles.append(tiles)
 
     def nextLevel(self):
