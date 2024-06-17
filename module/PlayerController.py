@@ -201,7 +201,7 @@ class PlayerController:
             if not self.__playerObject is None:
                 if len(PressedKeys["MOVE"]):
                     actions = []
-                    self.CurrentPressedKeys["MOVE"] = ([] if (not "MOVE" in self.CurrentPressedKeys) else self.CurrentPressedKeys["MOVE"])
+                    self.CurrentPressedKeys["MOVE"] = []
                     for keyPress in PressedKeys["MOVE"]:
                         if keyPress[1]:
                             self.CurrentPressedKeys["MOVE"].append(keyPress[0]) if not keyPress[0] in self.CurrentPressedKeys["MOVE"] else None
