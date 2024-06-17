@@ -1,5 +1,6 @@
 from module.GlobalTimer import timerDisplay
 import ttkbootstrap as ttk
+from tkinter import TclError
 
 class GUITimerDisplay(timerDisplay):
     def __init__(self, *args, **kwargs):
@@ -19,7 +20,10 @@ class GUITimerDisplay(timerDisplay):
             timeSec (int): Time Left in Second. 
         """
         super().update(timeSec)
-        self.TimerLabel.config(text="{}:{:02d}:{:02d}".format(self.hour, self.mins, self.secs))
+        try:
+            self.TimerLabel.config(text="{}:{:02d}:{:02d}".format(self.hour, self.mins, self.secs))
+        except TclError as Error:
+            raise self.DisplayOutdatedError(f"Tkinter Object No longer Exist: {Error}")
 
     def pack(self, *args, **kwargs):
         """

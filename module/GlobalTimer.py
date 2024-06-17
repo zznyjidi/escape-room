@@ -21,6 +21,11 @@ class timerDisplay:
         self.mins, self.secs = divmod(self.timeSec, 60)
         self.hour, self.mins = divmod(self.mins, 60)
 
+    class DisplayOutdatedError(Exception):
+        """
+        #### Raise when the Timer Display is no longer be able to update. 
+        """
+
 class timer:
     __updateObjects = []
     __paused = False
@@ -50,7 +55,10 @@ class timer:
             while self.__paused:
                 pass
             for i in self.__updateObjects:
-                i.update(self.__timeSec)
+                try:
+                    i.update(self.__timeSec)
+                except timerDisplay.DisplayOutdatedError:
+                    self.__updateObjects.remove(i)
             time.sleep(1)
             self.__timeSec -= 1
         self.debugPrint("Timer Ended. ")
