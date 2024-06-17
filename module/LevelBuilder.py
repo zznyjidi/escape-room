@@ -95,6 +95,18 @@ class LevelBuilder(ttk.Frame):
             return item.collision
         return False
 
+    def getItem(self, index: Tuple[int, int]) -> LevelObject | PlaceHolder | None:
+        """
+        #### Get Item from Grid. 
+
+        Args:
+            index (Tuple[int, int]): Place of the Item. 
+
+        Returns:
+            LevelObject | PlaceHolder | None: Item. 
+        """
+        return self.__currentLevel.getItem(index[1], index[0])
+
     def getBlockCoordinate(self, row: int, col: int, point: RelativePosition) -> Tuple[int, int]:
         """
         #### Get Coordinate From Grid. 
