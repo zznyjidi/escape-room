@@ -199,16 +199,16 @@ class PlayerController:
                 keys.clear()
 
             if not self.__playerObject is None:
-                if len(PressedKeys["MOVE"]) and self.__playerObject.isMoveable():
+                if len(PressedKeys["MOVE"]):
                     actions = []
-                    CurrentPressedKeys = []
+                    self.CurrentPressedKeys = []
                     for keyPress in PressedKeys["MOVE"]:
                         if keyPress[1]:
-                            CurrentPressedKeys.append(keyPress[0]) if not keyPress[0] in CurrentPressedKeys else None
+                            self.CurrentPressedKeys.append(keyPress[0]) if not keyPress[0] in self.CurrentPressedKeys else None
                         else:
-                            CurrentPressedKeys.remove(keyPress[0]) if keyPress[0] in CurrentPressedKeys else None
-                        if len(CurrentPressedKeys):
-                            actions.append(CurrentPressedKeys[:])
+                            self.CurrentPressedKeys.remove(keyPress[0]) if keyPress[0] in self.CurrentPressedKeys else None
+                        if len(self.CurrentPressedKeys):
+                            actions.append(self.CurrentPressedKeys[:])
                     for action in actions:
                         self.__playerObject.move(self.__keyToAngle(action))
 
