@@ -19,6 +19,6 @@ LEVEL.setDescriber(DESCRIBER[:])
 LEVEL_LOCKED.setDescriber(DESCRIBER[:])
 
 def doorLockedPopup():
-    tkinter.messagebox.showinfo("DOOR", "The Door is Locked! ")
+    tkinter.messagebox.showwarning("DOOR", "The Door is Locked! ")
 
 LEVEL_LOCKED.setLockedFunction(doorLockedPopup)
