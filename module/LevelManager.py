@@ -34,10 +34,7 @@ class LevelManager:
         self.playerController = PlayerController(master, debug=self.__debug)
         self.playerObject = Player(self.levelBuilder, self.playerTiles[self.currentTiles], debug=self.__debug)
 
-        self.levelBuilder.loadLevel(self.levelGrids[self.currentLevel])
-        self.levelBuilder.buildLevel()
-        self.playerObject.drawOnCanvas(self.levelBuilder.param[PlaceHolder.SPAWN])
-        self.playerController.attachPlayer(self.playerObject)
+        self.buildCurrentLevel()
 
         self.levelBuilder.pack(fill="both", expand=True)
         self.globalTimer.start() if not self.globalTimer is None else None
@@ -51,15 +48,16 @@ class LevelManager:
         """
         self.globalTimer = timer(timeSec, lambda: self.failed("TIMER_END"), debug=self.__debug)
 
-    def addLevel(self, level):
+    def addLevel(self, *levels):
         """
         #### Add a Level to the Game. 
 
         Args:
-            level (Module): Level Describer File. (See testLevel for Examples. )
+            levels (Module): Level Describer File. (See testLevel for Examples. )
         """
-        self.levelGrids.append(level.LEVEL)
-        self.levelGrids[-1].addItem(level.NEXT_LEVEL[1], level.NEXT_LEVEL[0], interact(self.nextLevel, True), overwrite=True)
+        for level in levels:
+            self.levelGrids.append(level.LEVEL)
+            self.levelGrids[-1].addItem(level.NEXT_LEVEL[1], level.NEXT_LEVEL[0], interact(self.nextLevel, True), overwrite=True)
 
     def addPlayerTiles(self, tiles: TileLoader):
         """
@@ -70,9 +68,27 @@ class LevelManager:
         """
         self.playerTiles.append(tiles)
 
+    def buildCurrentLevel(self):
+        """
+        #### Build Current Level. 
+        """
+        self.levelBuilder.loadLevel(self.levelGrids[self.currentLevel])
+        self.levelBuilder.buildLevel()
+        self.playerObject.drawOnCanvas(self.levelBuilder.param[PlaceHolder.SPAWN])
+        self.playerController.attachPlayer(self.playerObject)
+
     def nextLevel(self):
+        """
+        #### Go to Next Level if exist or to Success. 
+        Bind to NEXT_LEVEL by Default. 
+        """
         self.currentLevel += 1
-        raise NotImplementedError
+        self.playerController.detachPlayer()
+        self.levelBuilder.clearLevel()
+        if self.currentLevel < len(self.levelGrids):
+            self.buildCurrentLevel()
+        else:
+            self.success()
 
     def success(self):
         raise NotImplementedError
