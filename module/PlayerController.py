@@ -1,4 +1,5 @@
 from typing import Callable, Dict, List, Tuple, Final
+from module.MovableObject import MoveableObject
 import ttkbootstrap as ttk
 import threading, time
 import config.keymap
@@ -27,6 +28,7 @@ class PlayerController:
         self.__window.bind("<KeyPress>", self.__keyPressedHook)
         self.__window.bind("<KeyRelease>", self.__keyReleaseHook)
         self.__OperationThread: threading.Thread =  threading.Thread(target=self.__ControllerOperationThread, daemon=True)
+        self.CurrentPressedKeys = {}
         self.__OperationThread.start()
 
 
@@ -72,12 +74,12 @@ class PlayerController:
         return False
 
 
-    def attachPlayer(self, PlayerObject):
+    def attachPlayer(self, PlayerObject: MoveableObject):
         """
         #### Attach Player Controller to a Controllable Object. 
 
         Args:
-            PlayerObject (_type_): Object to be Attached. 
+            PlayerObject (MoveableObject): Object to be Attached. 
         """
         self.__playerObject = PlayerObject
         self.debugPrint(f"Player Object Attached: {PlayerObject}")
@@ -87,7 +89,7 @@ class PlayerController:
         """
         #### Detach Player Object from Player Controller. 
         """
-        self.__playerObject = None
+        self.__playerObject: MoveableObject | None = None
         self.debugPrint(f"Player Object Detached. ")
 
 
@@ -101,7 +103,6 @@ class PlayerController:
         if clearQuery:
             self.clearQuery()
         self.__updateLocked = False
-        self.__updateReady = True
 
 
     def inputDisable(self, clearQuery: bool = True):
@@ -112,7 +113,6 @@ class PlayerController:
             clearQuery (bool, optional): Clear Unhandled Pressed Key Query. Defaults to True.
         """
         self.__updateLocked = True
-        self.__updateReady = False
         if clearQuery:
             self.clearQuery()
 
@@ -188,7 +188,7 @@ class PlayerController:
         #### Thread that Handle Key Press to Object Movements. 
         """
         while True:
-            if not self.__updateReady:
+            if not self.__updateLocked:
                 pass
             if not self.havePressedKey():
                 pass
@@ -201,17 +201,22 @@ class PlayerController:
             if not self.__playerObject is None:
                 if len(PressedKeys["MOVE"]):
                     actions = []
-                    self.CurrentPressedKeys = []
+                    self.CurrentPressedKeys["MOVE"] = ([] if (not "MOVE" in self.CurrentPressedKeys) else self.CurrentPressedKeys["MOVE"])
                     for keyPress in PressedKeys["MOVE"]:
                         if keyPress[1]:
-                            self.CurrentPressedKeys.append(keyPress[0]) if not keyPress[0] in self.CurrentPressedKeys else None
+                            self.CurrentPressedKeys["MOVE"].append(keyPress[0]) if not keyPress[0] in self.CurrentPressedKeys["MOVE"] else None
                         else:
-                            self.CurrentPressedKeys.remove(keyPress[0]) if keyPress[0] in self.CurrentPressedKeys else None
-                        if len(self.CurrentPressedKeys):
-                            actions.append(self.CurrentPressedKeys[:])
+                            self.CurrentPressedKeys["MOVE"].remove(keyPress[0]) if keyPress[0] in self.CurrentPressedKeys["MOVE"] else None
+                        if len(self.CurrentPressedKeys["MOVE"]):
+                            actions.append(self.CurrentPressedKeys["MOVE"][:])
                     for action in actions:
                         self.__playerObject.move(self.__keyToAngle(action))
-
+                if len(PressedKeys["INTERACTIVE"]):
+                    actions = list(map(lambda keyPress: keyPress[0] if keyPress[1] else None, PressedKeys["INTERACTIVE"]))
+                    while None in actions:
+                        actions.remove(None)
+                    if config.keymap.keymap["INTERACTIVE_SELECT"] in actions:
+                        self.__playerObject.interact()
 
     def debugPrint(self, message):
         """

@@ -1,7 +1,7 @@
 from module.TileLoader import TileLoader
 from module.LevelBuilder import LevelBuilder, PlaceHolder
 from module.VirtualGrid import RelativePosition
-from LevelObject import LevelObject
+from module.LevelObject import LevelObject
 from typing import List, Tuple
 from PIL import ImageTk
 import config.drawing
@@ -78,7 +78,7 @@ class Player(MoveableObject):
             self.currentFrame = ImageTk.PhotoImage(self.tiles.getTile((currentTileIndex[0], currentTileIndex[1] + self.currentFrameIndex)))
             self.master.canvas.itemconfig(self.canvasImage, image=self.currentFrame)
         
-        if not self.master.haveHitBox(self.getPosFromDelta(deltaX, deltaY)):
+        if not self.master.haveHitBox(self.getPosFromDelta((deltaX, deltaY))):
             self.currentPos[0] += deltaX
             self.currentPos[1] += deltaY
             self.master.canvas.move(self.canvasImage, deltaX*config.drawing.gridBlockSize, deltaY*config.drawing.gridBlockSize)
