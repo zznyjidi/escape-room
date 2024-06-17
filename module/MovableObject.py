@@ -27,24 +27,31 @@ class MoveableObject:
         return True
 
 class Player(MoveableObject):
-    def __init__(self, master: LevelBuilder, tiles: TileLoader, defaultLocation: Tuple[int, int], debug: bool = False):
+    def __init__(self, master: LevelBuilder, tiles: TileLoader, debug: bool = False):
         """
         #### Create a Player Object. 
 
         Args:
             master (LevelBuilder): Level Builder to Add the Player. 
             tiles (TileLoader): Tiles to Use for the Character. 
-            defaultLocation (Tuple[int, int]): Location when added. 
             debug (bool, optional): Run in debug Mode. Defaults to False.
         """
         self.__debug = debug
         self.master = master
         self.tiles = tiles
-        self.currentPos = list(defaultLocation)
+
+    def drawOnCanvas(self, location: Tuple[int, int]):
+        """
+        #### Add Object to Canvas. 
+
+        Args:
+            location (Tuple[int, int]): Location to add player. 
+        """
+        self.currentPos = list(location)
         self.currentFrameIndex: int = 0
-        self.currentFrame = ImageTk.PhotoImage(tiles.getTile(config.drawing.tileConfig["STAND_DOWN"]))
-        locationY, locationX = master.getBlockCoordinate(self.currentPos[1], self.currentPos[0], RelativePosition.CENTER)
-        self.canvasImage = master.canvas.create_image(locationX, locationY, anchor=ttk.CENTER, image=self.currentFrame)
+        self.currentFrame = ImageTk.PhotoImage(self.tiles.getTile(config.drawing.tileConfig["STAND_DOWN"]))
+        locationY, locationX = self.master.getBlockCoordinate(self.currentPos[1], self.currentPos[0], RelativePosition.CENTER)
+        self.canvasImage = self.master.canvas.create_image(locationX, locationY, anchor=ttk.CENTER, image=self.currentFrame)
 
     def move(self, angle: List[str]):
         """

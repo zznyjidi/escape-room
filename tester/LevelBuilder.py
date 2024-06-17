@@ -13,7 +13,8 @@ level = LevelBuilder(window, debug=True)
 level.loadLevel(levels.testLevel.LEVEL)
 level.buildLevel()
 
-player = Player(level, TileLoader("assets/player_tile_32.png", tileSize=(32, 48), blankHeight=16, emptyFirstRow=True), (2, 1), debug=True)
+player = Player(level, TileLoader("assets/player_tile_32.png", tileSize=(32, 48), blankHeight=16, emptyFirstRow=True), debug=True)
+player.drawOnCanvas((2, 1))
 Controller.attachPlayer(player)
 
 level.pack(fill="both", expand=True)
