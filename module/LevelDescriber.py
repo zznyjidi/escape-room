@@ -44,6 +44,15 @@ class LevelDescriber:
         self.GRID = VirtualGrid(self.HEIGHT, self.WIDTH, debug=True)
         self.GRID.importGrid(self.DESCRIBER)
 
+    def setMaster(self, master):
+        """
+        #### Set the Level's Master Level Manager. 
+
+        Args:
+            master (LevelManager): The Game's LevelManager. 
+        """
+        self.MASTER = master
+
     def setLockedFunction(self, func: Callable[[None], None]):
         """
         #### Set Function to Run when Trying to Go to Next Level Without Unlock. 

@@ -15,8 +15,8 @@ DESCRIBER = [
     [TEST_IMG, TEST_IMG, None,      TEST_IMG]
 ]
 
-LEVEL.setDescriber(DESCRIBER[:])
-LEVEL_LOCKED.setDescriber(DESCRIBER[:])
+LEVEL.setDescriber(DESCRIBER)
+LEVEL_LOCKED.setDescriber(DESCRIBER)
 
 def doorLockedPopup():
     tkinter.messagebox.showwarning("DOOR", "The Door is Locked! ")
