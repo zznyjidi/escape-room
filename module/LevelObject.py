@@ -47,7 +47,6 @@ class LevelObject:
         return not self.interactiveFunction is None
 
 class img(LevelObject):
-    __counter: int = -1
     __PhotoImg: List[ImageTk.PhotoImage] = []
     def __init__(self, imgPath: str, size: Tuple[int, int], interactive: Callable[[None], None] | None = None, collision: bool = True):
         """
@@ -78,8 +77,7 @@ class img(LevelObject):
         """
         super().addToCanvas(canvas, coordinate)
         self.__PhotoImg.append(ImageTk.PhotoImage(self.object))
-        self.__counter += 1
-        return canvas.create_image(self.targetCoordinate, anchor=CENTER, image=self.__PhotoImg[self.__counter])
+        return canvas.create_image(self.targetCoordinate, anchor=CENTER, image=self.__PhotoImg[-1])
 
 class interact(LevelObject):
     def __init__(self, interactive: Callable[[None], None], collision: bool = False):
