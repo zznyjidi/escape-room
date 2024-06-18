@@ -1,6 +1,6 @@
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Final
 
-gridBlockSize: int = 64
+gridBlockSize: Final[int] = 64
 
 tileConfig: Dict[str, Tuple[int, int]] = {
     "STAND_DOWN":  (0, 3),

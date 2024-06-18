@@ -4,6 +4,7 @@ from typing import Tuple, List, Any, Callable
 
 class LevelObject:
     objectType: str = "BASE"
+    offset = (0, 0)
     targetCanvas: Canvas
     targetCoordinate: Tuple[int, int]
     collision = True
@@ -17,7 +18,7 @@ class LevelObject:
             coordinate (Tuple[int, int]): Coordinate on Canvas. 
         """
         self.targetCanvas = canvas
-        self.targetCoordinate = (coordinate[1], coordinate[0])
+        self.targetCoordinate = (coordinate[1]+self.offset[0], coordinate[0]+self.offset[1])
 
     def interactive(self) -> Callable[[None], None] | None:
         """
@@ -48,7 +49,7 @@ class LevelObject:
 
 class img(LevelObject):
     __PhotoImg: List[ImageTk.PhotoImage] = []
-    def __init__(self, imgPath: str, size: Tuple[int, int], interactive: Callable[[None], None] | None = None, collision: bool = True):
+    def __init__(self, imgPath: str, size: Tuple[int, int], interactive: Callable[[None], None] | None = None, collision: bool = True, useResize: bool = False, offset: Tuple[int, int] = (0, 0)):
         """
         #### Create a new Image in Level. 
 
@@ -61,8 +62,12 @@ class img(LevelObject):
         self.objectType = "IMAGE"
         self.interactiveFunction = interactive
         self.collision = collision
+        self.offset = offset
         self.object: Image = Image.open(imgPath)
-        self.object.thumbnail(size)
+        if useResize:
+            self.object = self.object.resize(size)
+        else:
+            self.object.thumbnail(size)
 
     def addToCanvas(self, canvas: Canvas, coordinate: Tuple[int, int]) -> Any:
         """
