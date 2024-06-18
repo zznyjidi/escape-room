@@ -1,5 +1,5 @@
 from module.LevelBuilder import PlaceHolder, wrapWithBoarder
-from module.LevelObject import LevelObject
+from module.LevelObject import LevelObject, img, interact
 from module.VirtualGrid import VirtualGrid
 from typing import List, Tuple, Callable
 
@@ -23,7 +23,7 @@ class LevelDescriber:
         self.NEXT_LEVEL = NextLevelPos
         self.UNLOCKED = not RequireUnlock
 
-    def setDescriber(self, Describer: List[List[LevelObject | PlaceHolder | None]], wrap: bool=True):
+    def setDescriber(self, Describer: List[List[LevelObject | PlaceHolder | None]], wrap: bool=True, nextLevelImg: img | None = None):
         """
         #### Set Level Describer for the Level. 
 
@@ -41,6 +41,10 @@ class LevelDescriber:
             wrapWithBoarder(self.DESCRIBER)
             self.HEIGHT += 2
             self.WIDTH += 2
+        if nextLevelImg is None:
+            self.DESCRIBER[self.NEXT_LEVEL[1]][self.NEXT_LEVEL[0]] = interact(None, True)
+        else:
+            self.DESCRIBER[self.NEXT_LEVEL[1]][self.NEXT_LEVEL[0]] = nextLevelImg
         self.GRID = VirtualGrid(self.HEIGHT, self.WIDTH)
         self.GRID.importGrid(self.DESCRIBER)
 

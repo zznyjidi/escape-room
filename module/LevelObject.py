@@ -7,6 +7,7 @@ class LevelObject:
     offset = (0, 0)
     targetCanvas: Canvas
     targetCoordinate: Tuple[int, int]
+    interactiveFunction: Callable[[None], None] | None
     collision = True
 
     def addToCanvas(self, canvas: Canvas, coordinate: Tuple[int, int]):
@@ -85,7 +86,7 @@ class img(LevelObject):
         return canvas.create_image(self.targetCoordinate, anchor=CENTER, image=self.__PhotoImg[-1])
 
 class interact(LevelObject):
-    def __init__(self, interactive: Callable[[None], None], collision: bool = False):
+    def __init__(self, interactive: Callable[[None], None] | None, collision: bool = False):
         self.objectType = "INTERACT"
         self.interactiveFunction = interactive
         self.collision = collision

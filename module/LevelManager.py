@@ -57,7 +57,7 @@ class LevelManager:
         """
         for level in levels:
             self.levels.append(level)
-            self.levels[-1].GRID.addItem(level.NEXT_LEVEL[1], level.NEXT_LEVEL[0], interact(self.nextLevel, True), overwrite=True)
+            self.levels[-1].GRID.getItem(level.NEXT_LEVEL[1], level.NEXT_LEVEL[0]).interactiveFunction = self.nextLevel
             self.levels[-1].setMaster(self)
 
     def addPlayerTiles(self, tiles: TileLoader):
