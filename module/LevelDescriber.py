@@ -41,7 +41,7 @@ class LevelDescriber:
             wrapWithBoarder(self.DESCRIBER)
             self.HEIGHT += 2
             self.WIDTH += 2
-        self.GRID = VirtualGrid(self.HEIGHT, self.WIDTH, debug=True)
+        self.GRID = VirtualGrid(self.HEIGHT, self.WIDTH)
         self.GRID.importGrid(self.DESCRIBER)
 
     def setMaster(self, master):

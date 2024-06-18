@@ -34,9 +34,9 @@ class LevelManager:
         self.playerController = PlayerController(master, debug=self.__debug)
         self.playerObject = Player(self.levelBuilder, self.playerTiles[self.currentTiles], debug=self.__debug)
 
+        self.levelBuilder.pack(fill="both", expand=True)
         self.buildCurrentLevel()
 
-        self.levelBuilder.pack(fill="both", expand=True)
         self.globalTimer.start() if not self.globalTimer is None else None
 
     def addTimer(self, timeSec: int):
