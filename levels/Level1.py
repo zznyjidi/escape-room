@@ -75,7 +75,7 @@ def whiteboardInteract():
     whiteboardContent = ttk.Label(window, image=LV1_whiteboardImgTk)
     whiteboardContent.pack(fill="both", expand=True)
     
-    window.update()
+    window.mainloop()
     LevelMaster.playerController.inputEnable()
 
 whiteboard = img(
