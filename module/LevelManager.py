@@ -95,7 +95,7 @@ class LevelManager:
             self.success()
 
     def success(self):
-        raise NotImplementedError
+        raise NotImplementedError("GAME SUCCESS. ")
 
     def failed(self, reason):
-        raise NotImplementedError
+        raise NotImplementedError(f"GAME FAILED due to {reason}")
