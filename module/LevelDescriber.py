@@ -2,6 +2,7 @@ from module.LevelBuilder import PlaceHolder, wrapWithBoarder
 from module.LevelObject import LevelObject, img, interact
 from module.VirtualGrid import VirtualGrid
 from typing import List, Tuple, Callable
+from copy import deepcopy
 
 class LevelDescriber:
     GRID: VirtualGrid
@@ -31,9 +32,7 @@ class LevelDescriber:
             Describer (List[List[LevelObject  |  PlaceHolder  |  None]]): Level Describer. 
             wrap (bool, optional): Wrap Level with Hitbox. Defaults to True.
         """
-        self.DESCRIBER = []
-        for row in Describer:
-            self.DESCRIBER.append(row[:])
+        self.DESCRIBER = deepcopy(Describer)
 
         self.HEIGHT = len(self.DESCRIBER)
         self.WIDTH = len(self.DESCRIBER[0])

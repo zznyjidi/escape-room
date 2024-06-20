@@ -1,4 +1,5 @@
 from typing import List, Tuple
+from copy import deepcopy
 from module.LevelObject import LevelObject
 from enum import IntEnum
 import time, warnings
@@ -36,9 +37,7 @@ class VirtualGrid:
         Args:
             newGrid (List[List[LevelObject | str | None]]): 2D List that defines the Grid. 
         """
-        self.__items = []
-        for row in newGrid:
-            self.__items.append(row[:])
+        self.__items = deepcopy(newGrid)
         self.__size = (len(newGrid), len(newGrid[0]))
         self.debugPrint(f"New Grid Imported, Size: {self.__size}. \n{newGrid}")
 
