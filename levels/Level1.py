@@ -36,9 +36,9 @@ def computerInteract():
         LEVEL.unlock()
         updateStatus()
     updateStatus()
-    lockButton = ttk.Button(doorControllerFrame, text="Lock", command=lockDoor)
+    lockButton = ttk.Button(doorControllerFrame, text="Lock", state="disabled", command=lockDoor)
     lockButton.pack()
-    unlockButton = ttk.Button(doorControllerFrame, text="Unlock", command=unlockDoor)
+    unlockButton = ttk.Button(doorControllerFrame, text="Unlock", state="disabled", command=unlockDoor)
     unlockButton.pack(pady=5)
     
     loginFrame = ttk.Frame(window)
@@ -51,6 +51,8 @@ def computerInteract():
         password = passwordEntry.get()
         if password == LevelPassword:
             loginFrame.place_forget()
+            lockButton.configure(state="normal")
+            unlockButton.configure(state="normal")
     loginButton = ttk.Button(loginFrame, text="LOGIN", command=checkPassword)
     loginButton.pack(pady=5)
     
